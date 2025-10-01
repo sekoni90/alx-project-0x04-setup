@@ -1,36 +1,44 @@
+// components/common/Button.tsx
 import React from "react";
-import { ButtonProps as ButtonPropsType } from "@/interface";
- // or relative path if no alias
 
-const colorMap: Record<string, string> = {
-  red: "bg-red-500 hover:bg-red-600",
-  blue: "bg-blue-500 hover:bg-blue-600",
-  orange: "bg-orange-500 hover:bg-orange-600",
-  green: "bg-green-500 hover:bg-green-600",
-};
+type Color = "red" | "blue" | "green" | "gray";
+
 interface ButtonProps {
   buttonLabel: string;
-  buttonSize?: string;
-  buttonBackgroundColor?: string;
-  action?: () => void; // Make action optional
+  buttonBackgroundColor?: Color | string;
+  onClick?: () => void;
+  className?: string;
 }
 
-export default function Button({
+const colorClasses: Record<Color, string> = {
+  red: "bg-red-500 hover:bg-red-600",
+  blue: "bg-blue-500 hover:bg-blue-600",
+  green: "bg-green-500 hover:bg-green-600",
+  gray: "bg-gray-500 hover:bg-gray-600",
+};
+
+const Button: React.FC<ButtonProps> = ({
   buttonLabel,
-  buttonSize,
-  buttonBackgroundColor = "blue",
-  action,
-}: ButtonProps) {
-  const bgClasses = colorMap[buttonBackgroundColor] ?? colorMap.blue;
-  const sizeClasses = buttonSize ?? "px-6 py-2";
+  buttonBackgroundColor = "gray",
+  onClick,
+  className = "",
+}) => {
+  const baseClass =
+    typeof buttonBackgroundColor === "string" &&
+    (["red", "blue", "green", "gray"] as Color[]).includes(
+      buttonBackgroundColor as Color
+    )
+      ? colorClasses[buttonBackgroundColor as Color]
+      : `bg-[${buttonBackgroundColor}] hover:brightness-90`;
 
   return (
     <button
-      type="button"
-      onClick={action}
-      className={`${bgClasses} ${sizeClasses} text-sm font-semibold rounded-lg transition duration-200 text-white`}
+      onClick={onClick}
+      className={`${baseClass} text-white font-semibold py-2 px-4 rounded ${className}`}
     >
       {buttonLabel}
     </button>
-  );
-}
+  );
+};
+
+export default Button;

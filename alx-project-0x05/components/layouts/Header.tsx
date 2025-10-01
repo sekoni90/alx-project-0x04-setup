@@ -1,33 +1,32 @@
+// components/layouts/Header.tsx
 import Link from "next/link";
 import Button from "../common/Button";
-import { usePathname } from "next/navigation";
+import { useRouter } from "next/router";
 import { useCount } from "@/context/CountContext";
 
 const Header: React.FC = () => {
-  const pathname = usePathname();
+  const router = useRouter();
+  const pathname = router.pathname;
   const { count } = useCount();
 
   return (
-    <header className="fixed w-full bg-white shadow-md">
+    <header className="fixed w-full bg-white shadow-md z-50">
       <div className="container mx-auto flex justify-between items-center py-6 px-4 md:px-8">
-        <Link href="/" className="text-3xl md:text-5xl font-bold text-gray-800 tracking-tight">
-          Splash App
+        <Link href="/">
+          <a className="text-3xl md:text-5xl font-bold text-gray-800 tracking-tight">
+            Splash App
+          </a>
         </Link>
+
         {/* Button Group */}
         <div className="flex gap-4">
           {!["/counter-app"].includes(pathname) ? (
             <>
-              <Link href="/counter-app">
-                <Button 
-                  buttonLabel="Counter App" 
-                  buttonBackgroundColor="green" 
-                />
-              </Link>
               <Button buttonLabel="Sign In" buttonBackgroundColor="red" />
               <Button buttonLabel="Sign Up" buttonBackgroundColor="blue" />
             </>
           ) : (
-            <p className="font-semibold text-lg">Current count: {count}</p>
+            <p className="font-semibold text-lg">Current count : {count}</p>
           )}
         </div>
       </div>
